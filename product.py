@@ -21,13 +21,15 @@ class Product(object):
         self.__dict__.update(kwargs)
 
     def clone(self):
-        return Product(self.__dict__)
+        return Product(**self.__dict__)
 
     def __mul__(self, scalar):
         res = self.clone()
         res.amount *= scalar
         res.price *= scalar
         return res
+    __rmul__ = __mul__
+
     
     def __add__(self, other):
         res = Product()
@@ -43,7 +45,7 @@ class Product(object):
         def new_value(name):
             a = getattr(self, name) * self.amount
             b = getattr(other, name) * other.amount
-            return (a + b) / self.amount
+            return (a + b) / res.amount
 
         res.proteins = new_value('proteins')
         res.carbohydrates = new_value('carbohydrates')
